@@ -1,0 +1,32 @@
+import java.awt.*;
+
+/**
+ * Created by m4dguy on 09.03.2015.
+ */
+public class SleepingMine extends NPC {
+
+    public SleepingMine(Engine e){
+        super(e);
+        model = new Mesh("gfx/sleepingmine.vo");
+    }
+
+    public void init() {
+        model = new Mesh("gfx/sleepingmine.vo");
+    }
+
+    public void act()
+    {
+        //does nothing
+        //will be spawn point for another mine
+    }
+
+    public void destroy()
+    {
+        destroyed = true;
+    }
+
+    public int getScore() {return 0;}
+
+    public void collide(NPC other) {}
+
+}
