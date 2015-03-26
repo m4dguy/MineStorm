@@ -23,13 +23,18 @@ public class Engine {
         }
 
         public void run(){
-            long time = (long)((1f/ticks) * 1000f);
+            long startTime, difference, sleepTime;
+            final long maxTime = (long)(1000f/(float)ticks);
             while(!terminate){
+                startTime = System.currentTimeMillis();
+
                 owner.tick();
 
-                //TODO: adapt timing
+                difference = System.currentTimeMillis() - startTime;
+                sleepTime = Math.max(0, maxTime - difference);
+
                 try{
-                    this.sleep(time);
+                    this.sleep(sleepTime);
                 }catch(InterruptedException e){
                     System.out.println(e);
                     System.exit(1);

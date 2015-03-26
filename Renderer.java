@@ -144,7 +144,6 @@ public class Renderer {
             playerIcon.transformationReset();
             playerIcon.scale(ICONSIZE);
             playerIcon.displace(engine.fieldWidth - (i*ICONSIZE*2) - 30, engine.fieldHeight - 45);
-            //playerIcon.render(graphics);
             renderMesh(playerIcon);
         }
     }

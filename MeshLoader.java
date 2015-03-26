@@ -3,10 +3,19 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
+ * Loader for Mesh objects.
  * Created by m4dguy on 15.03.2015.
  */
 public final class MeshLoader {
 
+    /**
+     * Loads a Mesh from a vector object (.vo) file.
+     * The .vo file starts with a list of nodes (indicator "v") and continues with a list of edges (indicator "e").
+     * For scaling reasons, the center of an object should be in the coordinate (0.5, 0.5).
+     * Point positions should be be between 0.0 and 1.0.
+     * @param path filepath to the .vo file.
+     * @return the constructed Mesh object.
+     */
     protected static Mesh loadVectorObject(String path){
         Mesh m;
 

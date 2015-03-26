@@ -1,7 +1,5 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Mainframe class for displaying the game.
@@ -10,7 +8,7 @@ import java.awt.image.BufferedImage;
  * Created by m4dguy on 24.02.2015.
  */
 
-public class Mainframe extends JFrame implements MouseMotionListener, MouseListener{
+public class Mainframe extends Frame implements MouseMotionListener, MouseListener{
 
 
     /**
@@ -27,17 +25,21 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
         }
 
         public void run(){
-            long time = (long)((1f/frames) * 1000f);
+            long startTime, difference, sleepTime;
+            final long maxTime = (long)(1000f/(float)frames);
             while(!terminate){
+                startTime = System.currentTimeMillis();
                 if(dbgWin != null)
                     dbgWin.update();
 
                 owner.repaint();
 
-                //TODO: adapt timing
                 if(frames != NO_FPS_LIMIT) {
+                    difference = System.currentTimeMillis() - startTime;
+                    sleepTime = Math.max(0, maxTime - difference);
+
                     try {
-                        sleep(time);
+                        sleep(sleepTime);
                     } catch (InterruptedException e) {
                         System.out.println(e);
                         System.exit(1);
@@ -57,7 +59,6 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
     protected Engine engine;
 
     protected Renderer renderer;
-    protected BufferedImage buffer;
     protected Panel view;
 
     public Mainframe(Engine e){
@@ -75,7 +76,7 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
         int x = (d.width - getSize().width) / 2;
         int y = (d.height - getSize().height) / 2;
         setLocation(x, y);
-        JPanel cp = new JPanel(new BorderLayout());
+        Panel cp = new Panel(new BorderLayout());
         add(cp);
         setResizable(false);
         view = new Panel(null);
@@ -101,8 +102,7 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
         super.paint(g);
 
         g = view.getGraphics();
-        buffer = renderer.render();
-        g.drawImage(buffer, 0, 0, null);
+        g.drawImage(renderer.render(), 0, 0, null);
     }
 
     /**
