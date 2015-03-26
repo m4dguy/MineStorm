@@ -5,7 +5,7 @@ public class MagneticFireballMine extends NPC {
 
     public MagneticFireballMine(Engine e){
         super(e);
-        model = new Mesh("gfx/fireballmine.vo");
+        model = MeshLoader.loadVectorObject("gfx/fireballmine.vo");
     }
 
     public void act(){

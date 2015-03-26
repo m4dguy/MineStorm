@@ -12,7 +12,7 @@ public class MineLayer extends NPC {
 
     public MineLayer(Engine e){
         super(e);
-        model = new Mesh("gfx/floatingmine.vo");
+        model = MeshLoader.loadVectorObject("gfx/floatingmine.vo");
         mines = 0;
         setNewTarget();
     }

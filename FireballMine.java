@@ -6,7 +6,7 @@ public class FireballMine extends NPC {
 
     public FireballMine(Engine e){
         super(e);
-        model = new Mesh("gfx/fireballmine.vo");
+        model = MeshLoader.loadVectorObject("gfx/fireballmine.vo");
         float dx = engine.rand.nextFloat();
         float dy = engine.rand.nextFloat();
         dx *= (engine.rand.nextFloat() < 0.5f)? 1f : -1f;

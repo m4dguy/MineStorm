@@ -5,7 +5,7 @@ public class MagneticMine extends NPC {
 
     public MagneticMine(Engine e){
         super(e);
-        model = new Mesh("gfx/magneticmine.vo");
+        model = MeshLoader.loadVectorObject("gfx/magneticmine.vo");
     }
 
     public void act(){

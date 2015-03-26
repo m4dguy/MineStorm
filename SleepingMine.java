@@ -6,11 +6,7 @@ public class SleepingMine extends NPC {
     public SleepingMine(Engine e){
         super(e);
         affiliation = Engine.affiliation.NEUTRAL;
-        model = new Mesh("gfx/sleepingmine.vo");
-    }
-
-    public void init() {
-        model = new Mesh("gfx/sleepingmine.vo");
+        model = MeshLoader.loadVectorObject("gfx/sleepingmine.vo");
     }
 
     public void act()

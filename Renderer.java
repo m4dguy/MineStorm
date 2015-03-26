@@ -20,7 +20,7 @@ public class Renderer {
 
     public Renderer(Engine e){
         engine = e;
-        playerIcon = new Mesh("gfx/player.vo");
+        playerIcon = MeshLoader.loadVectorObject("gfx/player.vo");
 
         bufferBackground = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_RGB);
         bufferObjects = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_ARGB);

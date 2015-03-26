@@ -7,20 +7,13 @@ import java.util.ArrayList;
  */
 public final class MeshLoader {
 
-    public static Mesh loadMesh(String path) {
-        Mesh m = new Mesh(path);
-
-
-
-
-        return m;
-    }
-
-
-
     protected static Mesh loadVectorObject(String path){
-        Mesh m = new Mesh();
+        Mesh m;
 
+        int nodeCount;
+        int edgeCount;
+        float[][] nodes;
+        int[][] edges;
 
         ArrayList<String> lines = new ArrayList<String>();
         int n = 0;      //number of nodes
@@ -44,11 +37,11 @@ public final class MeshLoader {
         }catch(Exception except){System.out.println(e);}
 
         //construct data
-        m.nodeCount = n;
-        m.edgeCount = e;
-        m.nodes = new float[m.nodeCount][2];
-        m.nodesDisplaced = new float[m.nodeCount][2];
-        m.edges = new int[m.edgeCount][2];
+        nodeCount = n;
+        edgeCount = e;
+        nodes = new float[nodeCount][2];
+        //nodesDisplaced = new float[m.nodeCount][2];
+        edges = new int[edgeCount][2];
 
         n = 0;
         e = 0;
@@ -59,18 +52,23 @@ public final class MeshLoader {
 
             tokens = UtilsProcessing.splitByWhitespace(s);
             if(tokens.get(0).equals("v")) {
-                m.nodes[n][0] = Float.parseFloat(tokens.get(1));
-                m.nodes[n][1] = Float.parseFloat(tokens.get(2));
-                m.nodesDisplaced[n][0] = Float.parseFloat(tokens.get(1));
-                m.nodesDisplaced[n][1] = Float.parseFloat(tokens.get(2));
+                nodes[n][0] = Float.parseFloat(tokens.get(1));
+                nodes[n][1] = Float.parseFloat(tokens.get(2));
+                //nodesDisplaced[n][0] = Float.parseFloat(tokens.get(1));
+                //nodesDisplaced[n][1] = Float.parseFloat(tokens.get(2));
                 ++n;
             }
             if(tokens.get(0).equals("e")) {
-                m.edges[e][0] = Integer.parseInt(tokens.get(1));
-                m.edges[e][1] = Integer.parseInt(tokens.get(2));
+                edges[e][0] = Integer.parseInt(tokens.get(1));
+                edges[e][1] = Integer.parseInt(tokens.get(2));
                 ++e;
             }
         }
+
+
+        m = new Mesh(nodes, edges);
+        m.align();
+        m.calcBound();
         return m;
     }
 

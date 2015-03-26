@@ -1,6 +1,4 @@
 import java.awt.*;
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -40,77 +38,14 @@ public class Mesh {
         edges = otherEdges;
         nodeCount = otherNodes.length;
         edgeCount = otherEdges.length;
-        align();
-        calcBound();
-    }
 
-    /**
-     * Constructor for construction by loading from a vector object (.vo) file.
-     * TODO: replace with MeshLoader function.
-     * @param path relative path to the .vo file.
-     */
-    public Mesh(String path) {
-        loadVectorObject(path);
-        align();
-        calcBound();
-    }
-
-    /**
-     * Starts a loader for loading from a .vo file.
-     * Constructs the Mesh.
-     * TODO: replace with MeshLoader function.
-     * @param path relative path to the .vo file.
-     */
-    protected void loadVectorObject(String path){
-        ArrayList<String> lines = new ArrayList<String>();
-        int n = 0;      //number of nodes
-        int e = 0;      //number of edges
-
-        //count number of nodes and edges
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String line = br.readLine();
-            lines.add(line);
-            while(line != null){
-                if(line.charAt(0) == 'v'){
-                    ++n;
-                }
-                if(line.charAt(0) == 'e'){
-                    ++e;
-                }
-                line = br.readLine();
-                lines.add(line);
-            }
-        }catch(Exception except){System.out.println(e);}
-
-        //construct data
-        nodeCount = n;
-        edgeCount = e;
-        nodes = new float[nodeCount][2];
         nodesDisplaced = new float[nodeCount][2];
-        edges = new int[edgeCount][2];
-
-        n = 0;
-        e = 0;
-        ArrayList<String> tokens;
-        for(String s: lines) {
-            if (s == null)
-                continue;
-
-            tokens = UtilsProcessing.splitByWhitespace(s);
-            if(tokens.get(0).equals("v")) {
-                nodes[n][0] = Float.parseFloat(tokens.get(1));
-                nodes[n][1] = Float.parseFloat(tokens.get(2));
-                nodesDisplaced[n][0] = Float.parseFloat(tokens.get(1));
-                nodesDisplaced[n][1] = Float.parseFloat(tokens.get(2));
-                ++n;
-            }
-            if(tokens.get(0).equals("e")) {
-                edges[e][0] = Integer.parseInt(tokens.get(1));
-                edges[e][1] = Integer.parseInt(tokens.get(2));
-                ++e;
-            }
+        for (int i=0; i<nodes.length; ++i) {
+            nodesDisplaced[i] = Arrays.copyOf(nodes[i], nodes[i].length);
         }
+
+        align();
+        calcBound();
     }
 
     /**

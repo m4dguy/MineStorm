@@ -21,7 +21,7 @@ public class Player {
     protected Engine engine;
 
     public Player(Engine e) {
-        model = new Mesh("gfx/player.vo");
+        model = MeshLoader.loadVectorObject("gfx/player.vo");
         engine = e;
         resetPlayer();
     }

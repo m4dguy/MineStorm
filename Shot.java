@@ -12,7 +12,7 @@ public class Shot extends NPC{
 
     public Shot(Engine e, float px, float py, float dx, float dy) {
         super(e);
-        model = new Mesh("gfx/shot.vo");
+        model = MeshLoader.loadVectorObject("gfx/shot.vo");
         size = Engine.SMALLSIZE;
         life = shotLife;
         x = px;

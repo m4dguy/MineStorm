@@ -6,7 +6,7 @@ public class FloatingMine extends NPC {
 
     public FloatingMine(Engine e){
         super(e);
-        model = new Mesh("gfx/floatingmine.vo");
+        model = MeshLoader.loadVectorObject("gfx/floatingmine.vo");
 
         float dx = engine.rand.nextFloat();
         float dy = engine.rand.nextFloat();
