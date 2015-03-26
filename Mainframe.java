@@ -4,11 +4,19 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 /**
+ * Mainframe class for displaying the game.
+ * Also handles key and mouse input and rendering.
+ *
  * Created by m4dguy on 24.02.2015.
  */
 
 public class Mainframe extends JFrame implements MouseMotionListener, MouseListener{
 
+
+    /**
+     * Controller contains a thread for handling rendering.
+     * Rendering is done by calling repaint of the Mainframe after sleep time.
+     */
     public class Controller extends Thread {
         boolean terminate = false;
         Mainframe owner;
@@ -27,31 +35,29 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
                 owner.repaint();
 
                 //TODO: adapt timing
-                if(frames != NO_FPS_LIMIT){
-                    try{
-                        this.sleep(time);
-                    }catch(InterruptedException e){
+                if(frames != NO_FPS_LIMIT) {
+                    try {
+                        sleep(time);
+                    } catch (InterruptedException e) {
                         System.out.println(e);
                         System.exit(1);
                     }
-
                 }
             }
         }
     }
 
     public static final int NO_FPS_LIMIT = -1;
-    protected static final Color colorFg = new Color(1f, 1f, 1f);
-    protected static final Color colorBg = new Color(0f, 0f, 0f);
     protected static int frames;
 
-    protected static Mesh playerIcon;
-    protected static final int ICONSIZE = 12;
 
     protected DbgWindow dbgWin;
 
     protected Controller controller;
     protected Engine engine;
+
+    protected Renderer renderer;
+    protected BufferedImage buffer;
     protected Panel view;
 
     public Mainframe(Engine e){
@@ -84,47 +90,33 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
         //frames = NO_FPS_LIMIT;
         frames = 120;
         controller = new Controller(this);
-
-        playerIcon = new Mesh("gfx/player.vo");
+        renderer = new Renderer(engine);
     }
 
+    /**
+     * Calls the renderer for updating graphics.
+     * @see Mainframe.Controller
+     */
     public void paint(Graphics g){
         super.paint(g);
 
-        BufferedImage engineGfx = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        g = buffer.getGraphics();
-
-        //draw background
-        g.setColor(colorBg);
-        g.fillRect(0, 0, view.getWidth(), view.getHeight());
-
-        drawInterface(buffer);
-        engine.renderGame(engineGfx);
-        g.drawImage(engineGfx, 0, 0, null);
         g = view.getGraphics();
-
+        buffer = renderer.render();
         g.drawImage(buffer, 0, 0, null);
     }
 
-    public void drawInterface(Image buffer) {
-        Graphics g = buffer.getGraphics();
-        g.setColor(colorFg);
-        g.drawString(String.valueOf(engine.score), 20, 30);
-
-        for(int i=0; i<engine.lives; ++i) {
-            playerIcon.transformationReset();
-            playerIcon.scale(ICONSIZE);
-            playerIcon.displace(getWidth() - (i*ICONSIZE*2) - 30, getHeight() - 45);
-            playerIcon.render(buffer);
-        }
-    }
-
+    /**
+     * Starts all update threads.
+     * Tells the engine to start the game.
+     */
     public void gameStart() {
         controller.start();
         engine.startGame();
     }
 
+    /**
+     * Call to create a debug window displaying game variables.
+     */
     public void attachDebugWindow(){
         dbgWin = new DbgWindow(engine);
         dbgWin.setLocation(getX()+getWidth()+10, getY());
@@ -132,37 +124,28 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
 
 
     public void mouseDragged(MouseEvent e) {
-        float ax = e.getX() - engine.player.x;
-        float ay = e.getY() - engine.player.y;
-        float norm = ax * ax + ay * ay;
-        double angle;
-
-        angle = Math.atan(ax / ay);
-
-        engine.player.setDirection(ax, ay);
-        engine.player.accelerate(ax, ay);
-        engine.player.rotate((float)angle);
+        float dx = e.getX() - engine.player.x;
+        float dy = e.getY() - engine.player.y;
+        engine.addEvent(new EventMovePlayer(new Dummy(engine), dx, dy));
     }
 
     public void mouseMoved(MouseEvent e) {
-        float ax = e.getX() - engine.player.x;
-        float ay = e.getY() - engine.player.y;
-        double angle;
-
-        angle = Math.atan(ax / ay);
-        engine.player.rotate((float)angle);
+        float dx = e.getX() - engine.player.x;
+        float dy = e.getY() - engine.player.y;
+        engine.player.setAngle(dx, dy);
     }
 
     public void mouseClicked(MouseEvent e) {
 
         switch(e.getButton()) {
             case MouseEvent.BUTTON1:
-                float ax = e.getX() - engine.player.x;
-                float ay = e.getY() - engine.player.y;
-                float angle = (float)Math.atan(ax / ay);
+                float dx = e.getX() - engine.player.x;
+                float dy = e.getY() - engine.player.y;
+                engine.addEvent(new EventMovePlayer(new Dummy(engine), dx, dy));
+                break;
 
-                engine.player.accelerate(ax, ay);
-                engine.player.rotate(angle);
+            case MouseEvent.BUTTON2:
+                engine.player.escape();
                 break;
 
             case MouseEvent.BUTTON3:
@@ -173,7 +156,6 @@ public class Mainframe extends JFrame implements MouseMotionListener, MouseListe
                 break;
 
             default:
-                return;
         }
     }
 

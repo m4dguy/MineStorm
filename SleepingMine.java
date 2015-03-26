@@ -1,5 +1,3 @@
-import java.awt.*;
-
 /**
  * Created by m4dguy on 09.03.2015.
  */
@@ -7,6 +5,7 @@ public class SleepingMine extends NPC {
 
     public SleepingMine(Engine e){
         super(e);
+        affiliation = Engine.affiliation.NEUTRAL;
         model = new Mesh("gfx/sleepingmine.vo");
     }
 

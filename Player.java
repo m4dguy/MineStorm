@@ -30,15 +30,13 @@ public class Player {
         angle = 0;
         speed = 0;
 
-        dirX = 0;
-        dirY = 0;
         accelerationX = 0;
         accelerationY = 0;
     }
 
-    public void teleport(){
-        x = engine.rand.nextFloat() % Engine.fieldWidth;
-        y = engine.rand.nextFloat() % Engine.fieldHeight;
+    public void escape(){
+        x = engine.rand.nextFloat() * Engine.fieldWidth;
+        y = engine.rand.nextFloat() * Engine.fieldHeight;
         resetPlayer();
     }
 
@@ -46,13 +44,15 @@ public class Player {
         angle = a;
     }
 
+    public void setAngle(float dx, float dy) { angle = (float)Math.atan(dx / dy); }
+
     public void move() {
         x += dirX * speed;
         y += dirY * speed;
         speed *= .1f;
         speed += .5/(float)Math.sqrt(accelerationX*accelerationX + accelerationY*accelerationY+1);
-        accelerationX = 0;
-        accelerationY = 0;
+        accelerationX = 0f;
+        accelerationY = 0f;
     }
 
     public void setDirection(float dx, float dy) {

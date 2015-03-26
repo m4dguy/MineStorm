@@ -4,6 +4,11 @@ import java.util.Vector;
 
 
 /**
+ * The Game engine itself. Handles game state updating and object management.
+ * Uses event-based system which fires if certain conditions are met.
+ * Contains a controller for autonomous updating.
+ * Also contains some helpers such as enums, constants and a random number generator.
+ *
  * Created by m4dguy on 24.02.2015.
  */
 
@@ -39,6 +44,7 @@ public class Engine {
 
     //constants
     public static final float collisionDistance = 2f;
+    public static final float MAXSPEED = 2f;
 
     public static final float SMALLSIZE = 10f;
     public static final float MEDIUMSIZE = 20f;
@@ -48,7 +54,7 @@ public class Engine {
     public static final float SLOWSPEED = .5f;
     public static final float MEDIUMSPEED = 1f;
     public static final float FASTSPEED = 1.5f;
-    public static final float[] speed = {SLOWSPEED, MEDIUMSPEED, FASTSPEED};
+    public static final float[] speeds = {SLOWSPEED, MEDIUMSPEED, FASTSPEED};
 
     public static final int MAXENEMIES = 50;               //total number of enemies (mines, fireballs, minelayers)
     public static final int MAXSHOTS = 5;                  //max number of shots
@@ -63,7 +69,7 @@ public class Engine {
     protected int score;
     protected int shots;
 
-    Random rand;
+    public Random rand;
     protected Player player;
     protected Vector<NPC> npcs;
     protected Vector<EngineEvent> events;
@@ -79,6 +85,10 @@ public class Engine {
         controller = new Controller(this);
     }
 
+    /**
+     * Set up all variables s.t. everything is in default state.
+     * @see public void startGame()
+     */
     public void init() {
         lives = 4;
         level = 1;
@@ -88,12 +98,20 @@ public class Engine {
         npcs.clear();
     }
 
+    /**
+     * Set up start conditions and run controller.
+     */
     public void startGame() {
         init();
         loadLevel(level);
         controller.start();
     }
 
+    /**
+     * Update the game.
+     * Move all objects and check for events.
+     * @see Engine.Controller
+     */
     public void tick() {
         //move everything
         for(NPC n : npcs)
@@ -108,7 +126,7 @@ public class Engine {
         player.move();
 
         //check collisions and events
-        checkWrap();
+        checkBorders();
         checkCollisions();
         checkEvents();
         removeDestroyedNPCs();
@@ -119,18 +137,27 @@ public class Engine {
         }
     }
 
-    //placeholder
+    /**
+     * Game over event.
+     */
+    //TODO: placeholder
     public void gameOver(){
         System.exit(0);
     }
 
+
+    /**
+     * Level loading method.
+     * Changes the level according to the condition table.
+     * @param lvl the number for accessing the level condition table.
+     */
     //TODO: placeholder. use level loader
     public void loadLevel(int lvl) {
         player.x = fieldWidth / 2;
         player.y = fieldHeight / 2;
         npcs.clear();
 
-        for(int i=0; i<3; ++i){
+        for(int i=0; i<25; ++i){
             FloatingMine mine = new FloatingMine(this);
             mine.setSize(LARGESIZE);
             mine.setSpeed(MEDIUMSPEED);
@@ -139,10 +166,18 @@ public class Engine {
         }
     }
 
+    /**
+     * Reloads the current level.
+     * @see public void loadLevel()
+     */
     public void resetLevel() {
         loadLevel(level);
     }
 
+    /**
+     * Event called if the player dies.
+     * Results in loss of one life and reloading the level or game over.
+     */
     public void playerDeath()
     {
         if(lives <= 0)
@@ -162,6 +197,11 @@ public class Engine {
         }
     }
 
+    /**
+     * Check collisions in two steps.
+     * First step is a cheap proximity check which uses NPC.checkBoundCollision().
+     * Second step is precise distance calculation for the vector objects.
+     */
     public void checkCollisions() {
         //collision of NPCs
         for(int i=0; i<npcs.size(); ++i){
@@ -188,15 +228,27 @@ public class Engine {
         }*/
     }
 
+    /**
+     * Adds a new NPC to the game.
+     * @param n NPC which is supposed to be added.
+     */
     public void addNPC(NPC n){
         n.activate();
         npcs.add(n);
     }
 
+    /**
+     * Adds a new EngineEvent to the game.
+     * @param e EngineEvent which is supposed to be added.
+     */
     public void addEvent(EngineEvent e){
         events.add(e);
     }
 
+    /**
+     * Executes all events in the current event list.
+     * Events which are not successfully executed remain in the list.
+     */
     public void checkEvents() {
         for(int i=0; i<events.size(); ++i) {
             //TODO: possible read/write conflict
@@ -206,32 +258,36 @@ public class Engine {
         }
     }
 
+    /**
+     * Removes all NPC with their destroyed flag set to true.
+     */
     public void removeDestroyedNPCs() {
-        //Vector<NPC> cleaned = new Vector<NPC>(npcs.size());
-
         for(int i=0; i<npcs.size(); ++i) {
-            //TODO: possible read/write conflict
+            //TODO: use list (first in, first out!)
             if(npcs.get(i).destroyed()) {
                 score += npcs.get(i).getScore();
                 npcs.remove(i);
-            }else {
-                //cleaned.add(npcs.get(i));
             }
         }
-        //npcs = cleaned;
     }
 
+    /**
+     * Checks if the conditions for clearing the level are met.
+     * @return true, if all NPC are destroyed.
+     */
     public boolean levelClear(){
-
-        for(int i=0; i<npcs.size(); ++i)
-            if(!npcs.get(i).destroyed())
+        for(NPC n: npcs)
+            if(!n.destroyed())
                 return false;
 
         return true;
     }
 
-    //check for wraparound
-    public void checkWrap(){
+    /**
+     * Check if one the NPCs has left the game area.
+     * If so, fire an event to deal with this.
+     */
+    public void checkBorders(){
         for(NPC n: npcs) {
             if(n.x<0 || n.x>fieldWidth || n.y<0 || n.y>fieldHeight) {
                 addEvent(new EventWrapNPC(n));

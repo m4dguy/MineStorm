@@ -3,30 +3,36 @@
  */
 public class MineLayer extends NPC {
 
-    int mines;
-    int distance;
+    protected int mines;                      //number of mines lied
+    protected float targetX, targetY;         //target point
 
+    static final float targetDist = 2f;
+    static final float targetDistSq = targetDist*targetDist;
     static final int maxMines = 4;
-    static final int travelDistance = 100;
 
     public MineLayer(Engine e){
         super(e);
         model = new Mesh("gfx/floatingmine.vo");
         mines = 0;
-        distance = 0;
+        setNewTarget();
     }
 
     public void act(){
-        //TODO: change movement
-        dirX = 1f;
-        dirY = 1f;
+        float dx = targetX - this.x;
+        float dy = targetY - this.y;
+        setDirection(dx, dy);
 
         //lay mine
-        if((distance == travelDistance) && (mines < maxMines))  {
+        if((dx*dx+dy*dy) < targetDistSq) {
             engine.addEvent(new EventSpawnSleepingMine(this));
-            distance = 0;
             ++mines;
+            setNewTarget();
         }
+    }
+
+    public void setNewTarget() {
+        targetX = engine.rand.nextFloat() % engine.fieldWidth;
+        targetY = engine.rand.nextFloat() % engine.fieldHeight;
     }
 
     public int getScore(){

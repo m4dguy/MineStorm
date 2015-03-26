@@ -13,6 +13,7 @@ public class EventMovePlayer extends EngineEvent {
     }
 
     public boolean execute(){
+        engine.player.setDirection(dirX, dirY);
         engine.player.accelerate(dirX, dirY);
         return true;
     }
