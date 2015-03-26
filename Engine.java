@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.Random;
 import java.util.Vector;
 
@@ -185,16 +184,6 @@ public class Engine {
 
         --lives;
         resetLevel();
-    }
-
-    public void renderGame(Image img) {
-        player.render(img);
-
-        for(int i=0; i<npcs.size(); ++i) {
-            if (npcs.get(i).active()) {
-                npcs.get(i).render(img);
-            }
-        }
     }
 
     /**

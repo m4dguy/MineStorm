@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -205,23 +204,6 @@ public class Mesh {
         for(int i=0; i<nodeCount; ++i){
             nodesDisplaced[i][0] *= s;
             nodesDisplaced[i][1] *= s;
-        }
-    }
-
-    /**
-     * Renders the Mesh into the image object.
-     * TODO: move this into the dedicated Renderer class.
-     * @param img
-     */
-    public void render(Image img){
-        Graphics g = img.getGraphics();
-        g.setColor(new Color(1f, 1f, 1f));
-
-        int i, j;
-        for(int e=0; e<edgeCount; ++e) {
-            i = edges[e][0];
-            j = edges[e][1];
-            g.drawLine((int) nodesDisplaced[i][0], (int) nodesDisplaced[i][1], (int)nodesDisplaced[j][0], (int)nodesDisplaced[j][1]);
         }
     }
 

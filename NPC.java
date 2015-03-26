@@ -1,8 +1,5 @@
-import java.awt.*;
-
 /**
  * Non-playable character object.
- *
  *
  * Created by m4dguy on 24.02.2015.
  */
@@ -209,20 +206,5 @@ public abstract class NPC {
      */
     public boolean checkCollision(Mesh m){
         return model.collision(m);
-    }
-
-    /**
-     * Renders the NPC into the given image.
-     * @param img target image for rendering.
-     */
-    public void render(Image img){
-        model.transformationReset();
-        model.scale(size);
-
-        if(angle != 0)
-            model.rotate(angle);
-
-        model.displace(x, y);
-        model.render(img);
     }
 }

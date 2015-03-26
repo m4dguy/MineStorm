@@ -1,5 +1,3 @@
-import java.awt.Image;
-
 /**
  * Created by m4dguy on 24.02.2015.
  */
@@ -65,14 +63,6 @@ public class Player {
     public void accelerate(float forceX, float forceY) {
         accelerationX = forceX;
         accelerationY = forceY;
-    }
-
-    public void render(Image img){
-        model.transformationReset();
-        model.scale(size);
-        model.rotate(angle);
-        model.displace(x, y);
-        model.render(img);
     }
 
     public Mesh getModel(){return model;}
