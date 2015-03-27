@@ -1,14 +1,12 @@
 import java.util.Random;
 import java.util.Vector;
 
-
 /**
  * The Game engine itself. Handles game state updating and object management.
  * Uses event-based system which fires if certain conditions are met.
  * Contains a controller for autonomous updating.
  * Also contains some helpers such as enums, constants and a random number generator.
  *
- * Created by m4dguy on 24.02.2015.
  */
 
 public class Engine {
@@ -44,7 +42,7 @@ public class Engine {
     }
 
     //affiliations
-    public static enum affiliation {PLAYER, ALLY, NEUTRAL, ENEMY, SHOT};
+    public static enum affiliation {PLAYER, ALLY, NEUTRAL, ENEMY};
 
     //constants
     public static final float collisionDistance = 2f;
@@ -98,7 +96,7 @@ public class Engine {
         level = 1;
         score = 0;
         shots = 0;
-        player.resetPlayer();
+        player.reset();
         npcs.clear();
     }
 
@@ -127,6 +125,7 @@ public class Engine {
             }
         }
 
+        player.act();
         player.move();
 
         //check collisions and events
@@ -157,7 +156,8 @@ public class Engine {
      */
     //TODO: placeholder. use level loader
     public void loadLevel(int lvl) {
-        events.clear();
+        //events.clear();
+        player.reset();
         npcs.clear();
 
         for(int i=0; i<3; ++i){
@@ -197,21 +197,23 @@ public class Engine {
      */
     public void checkCollisions() {
         //collision of NPCs
+        Entity n;
         for(int i=0; i<npcs.size(); ++i){
+            n = npcs.get(i);
             for(int j=i; j<npcs.size(); ++j) {
                 if(i==j)
                     continue;
 
-                if(npcs.get(i).checkBoundCollision(npcs.get(j))) {
-                    npcs.get(i).collide(npcs.get(j));
-                    npcs.get(j).collide(npcs.get(i));
+                if(npcs.get(i).checkCollision(npcs.get(j))) {
+                    n.collide(npcs.get(j));
+                    npcs.get(j).collide(n);
                 }
             }
 
             //collision with player
-            if(npcs.get(i).checkBoundCollision(player)) {
-                npcs.get(i).collide(player);
-                player.collide(npcs.get(i));
+            if(player.checkCollision(n)) {
+                //n.collide(player);
+                player.collide(n);
             }
         }
 
@@ -266,7 +268,7 @@ public class Engine {
 
     /**
      * Checks if the conditions for clearing the level are met.
-     * @return true, if all NPC are destroyed.
+     * @return true, if all Enemies are destroyed.
      */
     public boolean levelClear(){
         for(Entity n: npcs)
@@ -277,7 +279,7 @@ public class Engine {
     }
 
     /**
-     * Check if one the NPCs has left the game area.
+     * Check if an Entity has left the game area.
      * If so, fire an event to deal with this.
      */
     public void checkBorders(){

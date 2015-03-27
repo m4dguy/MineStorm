@@ -9,21 +9,24 @@ public class Player extends Entity{
         engine = e;
         size = Engine.LARGESIZE;
         affiliation = Engine.affiliation.PLAYER;
-        resetPlayer();
+        reset();
     }
 
-    public void resetPlayer(){
+    public void reset(){
+        destroyed = false;
+        active = true;
         setPosition((Engine.fieldWidth/2f), (Engine.fieldHeight/2f));
         angle = 0;
         speed = 0;
     }
 
     public void act(){
-        setAngle(dirX / dirY);
         speed *= .99f;
     }
 
     public void destroy() {
+        destroyed =true;
+        active = false;
         engine.addEvent(new EventPlayerDeath(this));
     }
 

@@ -5,6 +5,7 @@ public class EventMoveEntity extends EngineEvent {
 
     float dirX;
     float dirY;
+    float speed;
 
     /**
      * Simple initialization.
@@ -12,10 +13,11 @@ public class EventMoveEntity extends EngineEvent {
      * @param dx x component of directional vector
      * @param dy y component of directional vector
      */
-    public EventMoveEntity(Entity s, float dx, float dy){
+    public EventMoveEntity(Entity s, float dx, float dy, float v){
         super(s);
         dirX = dx;
         dirY = dy;
+        speed = v;
     }
 
     /**
@@ -24,7 +26,7 @@ public class EventMoveEntity extends EngineEvent {
      */
     public boolean execute(){
         sender.setDirection(dirX, dirY);
-        sender.setSpeed(Engine.FASTSPEED);
+        sender.setSpeed(speed);
         return true;
     }
 }

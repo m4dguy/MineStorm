@@ -130,7 +130,7 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
             case MouseEvent.BUTTON1:
                 float dx = e.getX() - engine.player.x;
                 float dy = e.getY() - engine.player.y;
-                engine.addEvent(new EventMoveEntity(engine.player, dx, dy));
+                engine.addEvent(new EventMoveEntity(engine.player, dx, dy, Engine.FASTSPEED));
                 break;
 
             case MouseEvent.BUTTON2:
@@ -146,7 +146,11 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
     }
 
     public void mouseDragged(MouseEvent e) {
-        handleMouseEvent(e);
+        //handleMouseEvent(e);
+        float dx = e.getX() - engine.player.x;
+        float dy = e.getY() - engine.player.y;
+        engine.player.setAngle(dx, dy);
+        engine.addEvent(new EventMoveEntity(engine.player, dx, dy, Engine.FASTSPEED));
     }
 
     public void mouseMoved(MouseEvent e) {

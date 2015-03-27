@@ -1,17 +1,17 @@
 /**
- * Fired if the sending NPC leaves the game field bounds.
- * Wraps the NPC position.
+ * Fired by the Engine if the sender Entity leaves the game field bounds.
+ * Wraps the Entity position.
  */
 public class EventWrapEntity extends EngineEvent {
 
     /**
      * Simple initialization.
-     * @param s NPC to be wrapped
+     * @param s Entity to be wrapped
      */
     public EventWrapEntity(Entity s) {super(s);}
 
     /**
-     * Update the NPC position as a wrap-around.
+     * Update the Entity position as a wrap-around.
      * @return always true
      */
     public boolean execute()

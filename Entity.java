@@ -199,13 +199,95 @@ public abstract class Entity {
     }
 
     /**
+     * Checks if two Entities collide.
+     * Checks if one of the nodes intersect with one of the edge of the other Entity.
+     * Calculates an exact distance and checks if it is smaller than a predefined collision distance.
+     * @param other the other Entity.
+     * @return true, if both collide.
+     */
+    public boolean checkPreciseCollision(Entity other){
+        float distance;
+
+        float pos = 0f;     //value of interpolator
+        float x1, y1;       //position of point
+        float x2, y2;       //closest position of point on line
+
+        float px1, py1;     //position of first node
+        float px2, py2;     //position of second node
+
+        //first check:
+        //all nodes of this mesh with all edges of the other mesh
+        for(int i=0; i<model.nodes.length; ++i) {
+            x1 = model.nodesDisplaced[i][0];
+            y1 = model.nodesDisplaced[i][1];
+
+            for(int j=0; j<other.model.edges.length; ++j) {
+                px1 = other.model.nodesDisplaced[other.model.edges[j][0]][0];
+                py1 = other.model.nodesDisplaced[other.model.edges[j][0]][1];
+                px2 = other.model.nodesDisplaced[other.model.edges[j][1]][0];
+                py2 = other.model.nodesDisplaced[other.model.edges[j][1]][1];
+
+                pos = (px2 - x1)/(px1 - px2) + (py2 - y1)/(py1 - py2);
+
+                if ((pos > 1f) || (pos < 0f))
+                    return false;
+
+                x2 = px1 * pos + px2 * (1f - pos);
+                y2 = py1 * pos + py2 * (1f - pos);
+
+                //calculate actual distance
+                distance = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+                distance = (float) Math.sqrt(distance);
+                if (distance <= Engine.collisionDistance)
+                    return true;
+            }
+        }
+
+        //second check:
+        //all nodes of the mesh with all edges of this mesh
+        for(int i=0; i<other.model.nodes.length; ++i) {
+            x1 = other.model.nodesDisplaced[i][0];
+            y1 = other.model.nodesDisplaced[i][1];
+
+            for(int j=0; j<model.edges.length; ++j) {
+                px1 = model.nodesDisplaced[model.edges[j][0]][0];
+                py1 = model.nodesDisplaced[model.edges[j][0]][1];
+                px2 = model.nodesDisplaced[model.edges[j][1]][0];
+                py2 = model.nodesDisplaced[model.edges[j][1]][1];
+
+                pos = (px2 - x1)/(px1 - px2) + (py2 - y1)/(py1 - py2);
+
+                if ((pos > 1f) || (pos < 0f))
+                    return false;
+
+                x2 = px1 * pos + px2 * (1f - pos);
+                y2 = py1 * pos + py2 * (1f - pos);
+
+                //calculate actual distance
+                distance = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+                distance = (float) Math.sqrt(distance);
+                if (distance <= Engine.collisionDistance)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Checks if this Mesh and the given mesh collide.
      * Collision is checked in two steps:
-     * fuzzy collision of the bounding spheres first, exact collision of the Mesh nodes and edges afterwards.
-     * @param m
+     * Fuzzy collision of the bounding spheres first, exact collision of the Mesh nodes and edges afterwards.
+     * @param other other Entity for collision check.
      * @return true, if both objects collide.
+     * @see checkBoundCollision(Entity)
+     * @see checkPreciseCollision(Entity)
      */
-    public boolean checkCollision(Mesh m){
-        return model.collision(m);
+    public boolean checkCollision(Entity other){
+        if(!checkBoundCollision(other))
+            return false;
+
+        return true;
+        //return checkPreciseCollision(other);
     }
 }
