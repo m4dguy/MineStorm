@@ -10,9 +10,9 @@ public class EventPlayerEscape extends EngineEvent {
      * @return always true
      */
     public boolean execute(){
+        engine.player.resetPlayer();
         sender.x = engine.rand.nextFloat() * Engine.fieldWidth;
         sender.y = engine.rand.nextFloat() * Engine.fieldHeight;
-        engine.player.resetPlayer();
         return true;
     }
 }

@@ -16,6 +16,7 @@ public abstract class Entity {
     protected float dirY = 0f;
     protected float speed = 1f;
 
+    protected int health;               //not used in MineStorm
     protected Engine.affiliation affiliation = Engine.affiliation.ENEMY;
     protected Mesh model;
     protected boolean destroyed = false;

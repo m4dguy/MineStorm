@@ -27,5 +27,4 @@ public class EventMoveEntity extends EngineEvent {
         sender.setSpeed(Engine.FASTSPEED);
         return true;
     }
-
 }

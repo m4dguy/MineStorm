@@ -157,12 +157,11 @@ public class Engine {
      */
     //TODO: placeholder. use level loader
     public void loadLevel(int lvl) {
-        player.x = fieldWidth / 2;
-        player.y = fieldHeight / 2;
+        events.clear();
         npcs.clear();
 
-        for(int i=0; i<25; ++i){
-            FloatingMine mine = new FloatingMine(this);
+        for(int i=0; i<3; ++i){
+            FireballMine mine = new FireballMine(this);
             mine.setSize(LARGESIZE);
             mine.setSpeed(MEDIUMSPEED);
             mine.setPosition(rand.nextInt(fieldWidth), rand.nextInt(fieldHeight));
@@ -207,16 +206,18 @@ public class Engine {
                     npcs.get(i).collide(npcs.get(j));
                     npcs.get(j).collide(npcs.get(i));
                 }
-
             }
-        }
 
-        //collision with player
-        /*for(int i=0; i<npcs.size(); ++i){
-            if(npcs.get(i).collision(player.getModel())) {
+            //collision with player
+            if(npcs.get(i).checkBoundCollision(player)) {
                 npcs.get(i).collide(player);
                 player.collide(npcs.get(i));
             }
+        }
+
+
+        /*for(int i=0; i<npcs.size(); ++i){
+
         }*/
     }
 
@@ -287,8 +288,7 @@ public class Engine {
         }
 
         if(player.x<0 || player.x>fieldWidth || player.y<0 || player.y>fieldHeight) {
-            Dummy dummy = new Dummy(this);
-            addEvent(new EventWrapPlayer(dummy));
+            addEvent(new EventWrapEntity(player));
         }
     }
 }

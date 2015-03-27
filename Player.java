@@ -13,6 +13,7 @@ public class Player extends Entity{
     }
 
     public void resetPlayer(){
+        setPosition((Engine.fieldWidth/2f), (Engine.fieldHeight/2f));
         angle = 0;
         speed = 0;
     }
@@ -23,7 +24,7 @@ public class Player extends Entity{
     }
 
     public void destroy() {
-
+        engine.addEvent(new EventPlayerDeath(this));
     }
 
     public void collide(Entity other){
