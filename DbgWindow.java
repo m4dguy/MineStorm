@@ -1,7 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
 
-
+/**
+ * A simplistic Debug window which can be used to display different game variables.
+ * Attach an engine to it and (if necessary) add more code to display single variables.
+ */
 public class DbgWindow extends Frame {
 
     Engine engine;
@@ -79,6 +82,9 @@ public class DbgWindow extends Frame {
         setVisible(true);
     }
 
+    /**
+     * Updates all TextField contents.
+     */
     public void update() {
         tf_npcs.setText("" + engine.npcs.size());
         tf_events.setText("" + engine.events.size());

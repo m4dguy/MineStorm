@@ -1,13 +1,23 @@
 /**
- * Created by m4dguy on 12.03.2015.
+ * Create a shot pointing to the sender's (mouse pointer) position.
+ * The Shot appears at the exact Player position.
  */
 public class EventPlayerShoot extends EngineEvent{
 
+    /**
+     * Simple initialization.
+     * Submit a Dummy containing the target point.
+     * @param s sender
+     */
     public EventPlayerShoot(NPC s) {super(s);}
 
+    /**
+     * Create the Shot and add it to the Engine.
+     * @return always true.
+     */
     public boolean execute()
     {
-        float dx, dy, norm;
+        float dx, dy;
         dx = sender.x - engine.player.x;
         dy = sender.y - engine.player.y;
 

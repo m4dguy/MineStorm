@@ -1,12 +1,20 @@
 /**
- * spawn a fireball (shot) directed at the player
- * Created by m4dguy on 09.03.2015.
+ * Spawn a Fireball (Shot) directed at the Player.
+ * The Fireball is spawned at the sender's position.
  */
 
 public class EventSpawnFireball extends EngineEvent{
 
+    /**
+     * Simple initialization.
+     * @param s sender
+     */
     public EventSpawnFireball(NPC s){super(s);}
 
+    /**
+     * Spawn the fireball and set its direction and speed.
+     * @return always true
+     */
     public boolean execute()
     {
         Shot s = new Shot(engine);
@@ -15,7 +23,6 @@ public class EventSpawnFireball extends EngineEvent{
         dx = engine.player.x - sender.getPositionX();
         dy = engine.player.y - sender.getPositionY();
 
-        //TODO: check/ fix fireball speed
         s.affiliation = Engine.affiliation.ENEMY;
         s.speed = Engine.MEDIUMSPEED;
         s.setSize(Engine.MEDIUMSIZE);

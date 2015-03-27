@@ -1,12 +1,18 @@
 /**
- * remove sender silently (without awarding points)
- * Created by m4dguy on 09.03.2015.
+ * Remove the sender silently (without awarding points).
  */
-
 public class EventRemoveSilently extends EngineEvent{
 
+    /**
+     * Simple initialization.
+     * @param s sender
+     */
     public EventRemoveSilently(NPC s){super(s);}
 
+    /**
+     * Remove sender from the Engine's NPC list.
+     * @return always true
+     */
     public boolean execute()
     {
         engine.npcs.remove(sender);
