@@ -4,7 +4,7 @@
 public class EventSpawnFloatingMine extends EngineEvent{
 
     float size, speed;
-    public EventSpawnFloatingMine(NPC s, float f, float v){
+    public EventSpawnFloatingMine(Entity s, float f, float v){
         super(s);
         size = f;
         speed = v;
@@ -15,7 +15,8 @@ public class EventSpawnFloatingMine extends EngineEvent{
         FloatingMine mine = new FloatingMine(engine);
         mine.setSize(size);
         mine.setSpeed(speed);
-        engine.addNPC(mine);
+        mine.setPosition(sender.x, sender.y);
+        engine.addEntity(mine);
         return true;
     }
 }

@@ -9,7 +9,7 @@ public class EventSpawnFireball extends EngineEvent{
      * Simple initialization.
      * @param s sender
      */
-    public EventSpawnFireball(NPC s){super(s);}
+    public EventSpawnFireball(Entity s){super(s);}
 
     /**
      * Spawn the fireball and set its direction and speed.
@@ -29,7 +29,7 @@ public class EventSpawnFireball extends EngineEvent{
         s.setPosition(sender.getPositionX(), sender.getPositionY());
         s.setDirection(dx, dy);
         s.setAngle(dx, dy);
-        engine.addNPC(s);
+        engine.addEntity(s);
 
         return true;
     }

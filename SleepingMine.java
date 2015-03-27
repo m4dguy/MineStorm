@@ -1,7 +1,7 @@
 /**
  * Created by m4dguy on 09.03.2015.
  */
-public class SleepingMine extends NPC {
+public class SleepingMine extends Entity {
 
     public SleepingMine(Engine e){
         super(e);
@@ -22,6 +22,6 @@ public class SleepingMine extends NPC {
 
     public int getScore() {return 0;}
 
-    public void collide(NPC other) {}
+    public void collide(Entity other) {}
 
 }

@@ -2,7 +2,7 @@
 /**
  * Created by m4dguy on 24.02.2015.
  */
-public class FireballMine extends NPC {
+public class FireballMine extends Entity {
 
     public FireballMine(Engine e){
         super(e);
@@ -47,7 +47,7 @@ public class FireballMine extends NPC {
         return 1337;
     }
 
-    public void collide(NPC other) {
+    public void collide(Entity other) {
         if(this.affiliation != other.affiliation) {
             destroy();
         }

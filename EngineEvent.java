@@ -4,14 +4,14 @@
  * Call super() constructor to make sure that sender and engine are defined.
  */
 public abstract class EngineEvent {
-    public NPC sender;
+    public Entity sender;
     public Engine engine;
 
     /**
      * Constructor which defines the Engine reference and the sender responsible for this EngineEvent.
      * @param s the NPC responsible for creating this EngineEvent.
      */
-    public EngineEvent(NPC s){
+    public EngineEvent(Entity s){
         sender = s;
         engine = s.engine;
     }

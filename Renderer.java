@@ -91,7 +91,7 @@ public class Renderer {
      * Render each single NPC.
      */
     public void renderNPCs() {
-        NPC n;
+        Entity n;
         Mesh m;
 
         for(int a=0; a<engine.npcs.size(); ++a){

@@ -1,7 +1,7 @@
 /**
- * Set the player's direction and speed.
+ * Set the Entity's direction and speed.
  */
-public class EventMovePlayer extends EngineEvent {
+public class EventMoveEntity extends EngineEvent {
 
     float dirX;
     float dirY;
@@ -12,7 +12,7 @@ public class EventMovePlayer extends EngineEvent {
      * @param dx x component of directional vector
      * @param dy y component of directional vector
      */
-    public EventMovePlayer(NPC s, float dx, float dy){
+    public EventMoveEntity(Entity s, float dx, float dy){
         super(s);
         dirX = dx;
         dirY = dy;
@@ -23,8 +23,8 @@ public class EventMovePlayer extends EngineEvent {
      * @return always true
      */
     public boolean execute(){
-        engine.player.setDirection(dirX, dirY);
-        engine.player.accelerate(dirX, dirY);
+        sender.setDirection(dirX, dirY);
+        sender.setSpeed(Engine.FASTSPEED);
         return true;
     }
 

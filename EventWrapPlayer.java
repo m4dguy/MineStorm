@@ -8,7 +8,7 @@ public class EventWrapPlayer extends EngineEvent {
      * Simple initialization.
      * @param s a Dummy representing the Player
      */
-    public EventWrapPlayer(NPC s) {super(s);}
+    public EventWrapPlayer(Entity s) {super(s);}
 
     /**
      * Update the Player position as a wrap-around.

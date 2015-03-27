@@ -7,7 +7,7 @@ public class EventSpawnExplosion extends EngineEvent {
      * Simple initialization.
      * @param s sender
      */
-    public EventSpawnExplosion(NPC s) {super(s);}
+    public EventSpawnExplosion(Entity s) {super(s);}
 
     /**
      * Spawn the explosion.

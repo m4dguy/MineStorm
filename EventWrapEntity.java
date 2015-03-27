@@ -2,13 +2,13 @@
  * Fired if the sending NPC leaves the game field bounds.
  * Wraps the NPC position.
  */
-public class EventWrapNPC extends EngineEvent {
+public class EventWrapEntity extends EngineEvent {
 
     /**
      * Simple initialization.
      * @param s NPC to be wrapped
      */
-    public EventWrapNPC(NPC s) {super(s);}
+    public EventWrapEntity(Entity s) {super(s);}
 
     /**
      * Update the NPC position as a wrap-around.

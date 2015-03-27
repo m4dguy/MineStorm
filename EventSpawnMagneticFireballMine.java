@@ -4,7 +4,7 @@
 public class EventSpawnMagneticFireballMine extends EngineEvent{
 
     float size, speed;
-    public EventSpawnMagneticFireballMine(NPC s, float f, float v){
+    public EventSpawnMagneticFireballMine(Entity s, float f, float v){
         super(s);
         size = f;
         speed = v;
@@ -15,7 +15,8 @@ public class EventSpawnMagneticFireballMine extends EngineEvent{
         MagneticFireballMine mine = new MagneticFireballMine(engine);
         mine.setSize(size);
         mine.setSpeed(speed);
-        engine.addNPC(mine);
+        mine.setPosition(sender.x, sender.y);
+        engine.addEntity(mine);
         return true;
     }
 }

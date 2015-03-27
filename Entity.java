@@ -1,10 +1,8 @@
 /**
- * Non-playable character object.
- *
- * Created by m4dguy on 24.02.2015.
+ * Engine object.
  */
 
-public abstract class NPC {
+public abstract class Entity {
 
     protected int life;
 
@@ -25,8 +23,8 @@ public abstract class NPC {
 
     public Engine engine;
 
-    public NPC() {this(null);}
-    public NPC(Engine e) {
+    public Entity() {this(null);}
+    public Entity(Engine e) {
         engine = e;
     }
 
@@ -34,14 +32,14 @@ public abstract class NPC {
     //such includes movement and sending events to the engine
 
     /**
-     * Defines an action specific to the NPC. This action is executed in every tick of the game.
+     * Defines an action specific to the Entity. This action is executed in every tick of the game.
      * Override this method to control movement, destruction, EngineEvent triggering and others.
      */
     public abstract void act();
 
     /**
-     * Sets this NPC as active.
-     * Active NPCs are not destroyed and are allowed to use act() in every game tick.
+     * Sets this Entity as active.
+     * Active Entities are not destroyed and are allowed to use act() in every game tick.
      */
     public void activate() {
         active = true;
@@ -49,24 +47,24 @@ public abstract class NPC {
     }
 
     /**
-     * Use this to set the NPC's state to destroyed and (if necessary) )to trigger EngineEvents.
+     * Use this to set the Entity's state to destroyed and (if necessary) )to trigger EngineEvents.
      */
     public abstract void destroy();
 
     /**
-     * Return the score the destruction of this NPCs gives the player.
+     * Return the score the destruction of this Entitys gives the player.
      * @return the awarded score.
      */
     public abstract int getScore();
 
     /**
-     * Define the action that is triggered upon collision with another NPC.
-     * @param other the colliding NPC.
+     * Define the action that is triggered upon collision with another Entity.
+     * @param other the colliding Entity.
      */
-    public abstract void collide(NPC other);
+    public abstract void collide(Entity other);
 
     /**
-     * Move the NPC into the current direction with given speed factor.
+     * Move the Entity into the current direction with given speed factor.
      */
     public void move(){
         x += dirX * speed;
@@ -74,7 +72,7 @@ public abstract class NPC {
     }
 
     /**
-     * Tell the Engine if this NPC is active.
+     * Tell the Engine if this Entity is active.
      * @return true, if the active flag is set to true.
      */
     public boolean active(){ return active; }
@@ -88,7 +86,7 @@ public abstract class NPC {
     }
 
     /**
-     * Change the direction in which the NPC is moving with a vector.
+     * Change the direction in which the Entity is moving with a vector.
      * This vector is internally normalized to unit length.
      * @param dx x component of the directional vector.
      * @param dy x component of the directional vector.
@@ -108,7 +106,7 @@ public abstract class NPC {
     }
 
     /**
-     * Change the angle in which the NPC is facing with a vector.
+     * Change the angle in which the Entity is facing with a vector.
      * The direction does not have an influence on the movement direction.
      * @param dx x component of the directional vector.
      * @param dy y component of the directional vector.
@@ -118,7 +116,7 @@ public abstract class NPC {
     }
 
     /**
-     * Change the angle in which the NPC is facing (in radians).
+     * Change the angle in which the Entity is facing (in radians).
      * The direction does not have an influence on the movement direction.
      * @param a the new angle.
      */
@@ -127,7 +125,7 @@ public abstract class NPC {
     }
 
     /**
-     * Sets the new absolute position of the NPC.
+     * Sets the new absolute position of the Entity.
      * @param px x position.
      * @param py y position.
      */
@@ -148,18 +146,20 @@ public abstract class NPC {
      * Get the y position.
      * @return y position.
      */
-    public float getPositionY() { return y; }
+    public float getPositionY() {
+        return y;
+    }
 
     /**
-     * Returns the size of the NPC.
-     * @return the NPC's size.
+     * Returns the size of the Entity.
+     * @return the Entity's size.
      */
     public float getSize(){
         return size;
     }
 
     /**
-     * Tell the Engine if this NPC has been destroyed.
+     * Tell the Engine if this Entity has been destroyed.
      * @return true, if the destroyed flag is set to true.
      */
     public boolean destroyed(){
@@ -167,12 +167,12 @@ public abstract class NPC {
     }
 
     /**
-     * Calculates the distance to another NPC.
-     * @param other the NPC for the distance check.
-     * @return distance to the other NPC.
-     * @see NPC.checkBoundCollision(NPC)
+     * Calculates the distance to another Entity.
+     * @param other the Entity for the distance check.
+     * @return distance to the other Entity.
+     * @see Entity.checkBoundCollision(Entity)
      */
-    public float distance(NPC other) {
+    public float distance(Entity other) {
         float dist, dx, dy;
         dx = this.x - other.x;
         dy = this.y - other.y;
@@ -181,12 +181,12 @@ public abstract class NPC {
     }
 
     /**
-     * Checks if the bounding spheres of this and the given NPC collide.
+     * Checks if the bounding spheres of this and the given Entity collide.
      * Very cheap to calculate.
-     * @param other the other NPC for the collision check.
-     * @return
+     * @param other the other Entity for the collision check.
+     * @return true, if the bounds collide
      */
-    public boolean checkBoundCollision(NPC other) {
+    public boolean checkBoundCollision(Entity other) {
         if(this.affiliation == other.affiliation)
             return false;
 

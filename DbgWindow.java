@@ -92,7 +92,7 @@ public class DbgWindow extends Frame {
         tf_lifes.setText("" + engine.lives);
         tf_score.setText("" + engine.score);
         tf_speed.setText("" + engine.player.dirX + " / " + engine.player.dirY);
-        tf_acceleration.setText("" + engine.player.accelerationX + " / " + engine.player.accelerationY);
+        tf_acceleration.setText("" + engine.player.speed);
     }
 
 }

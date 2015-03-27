@@ -2,69 +2,35 @@
  * Created by m4dguy on 24.02.2015.
  */
 
-public class Player {
-
-    protected float x;
-    protected float y;
-    protected float angle;
-    protected final float size = Engine.LARGESIZE;
-
-    protected float speed;
-    protected float dirX;
-    protected float dirY;
-    protected float accelerationX;
-    protected float accelerationY;
-
-    protected Mesh model;
-    protected Engine engine;
+public class Player extends Entity{
 
     public Player(Engine e) {
         model = MeshLoader.loadVectorObject("gfx/player.vo");
         engine = e;
+        size = Engine.LARGESIZE;
+        affiliation = Engine.affiliation.PLAYER;
         resetPlayer();
     }
 
     public void resetPlayer(){
         angle = 0;
         speed = 0;
-
-        accelerationX = 0;
-        accelerationY = 0;
     }
 
-    public void escape(){
-        x = engine.rand.nextFloat() * Engine.fieldWidth;
-        y = engine.rand.nextFloat() * Engine.fieldHeight;
-        resetPlayer();
+    public void act(){
+        setAngle(dirX / dirY);
+        speed *= .99f;
     }
 
-    public void rotate(float a){
-        angle = a;
+    public void destroy() {
+
     }
 
-    public void setAngle(float dx, float dy) { angle = (float)Math.atan(dx / dy); }
-
-    public void move() {
-        x += dirX * speed;
-        y += dirY * speed;
-        speed *= .1f;
-        speed += .5/(float)Math.sqrt(accelerationX*accelerationX + accelerationY*accelerationY+1);
-        accelerationX = 0f;
-        accelerationY = 0f;
+    public void collide(Entity other){
+        destroy();
     }
 
-    public void setDirection(float dx, float dy) {
-        float norm = (float)Math.sqrt(dx*dx + dy*dy);
-        dirX = dx / norm;
-        dirY = dy / norm;
-        angle = (float)Math.atan(dx / dy);
+    public int getScore(){
+        return 0;
     }
-
-    public void accelerate(float forceX, float forceY) {
-        accelerationX = forceX;
-        accelerationY = forceY;
-    }
-
-    public Mesh getModel(){return model;}
-
 }

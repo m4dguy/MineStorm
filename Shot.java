@@ -2,7 +2,7 @@
  * Created by m4dguy on 27.02.2015.
  */
 
-public class Shot extends NPC{
+public class Shot extends Entity{
 
     public static final int shotLife = (int)(0.9 * Engine.fieldWidth);
 
@@ -40,7 +40,7 @@ public class Shot extends NPC{
         y = py;
     }
 
-    public void collide(NPC other) {
+    public void collide(Entity other) {
         this.active = false;
         engine.addEvent(new EventRemoveSilently(this));
     }

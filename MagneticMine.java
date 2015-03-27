@@ -1,7 +1,7 @@
 /**
  * Created by m4dguy on 24.02.2015.
  */
-public class MagneticMine extends NPC {
+public class MagneticMine extends Entity {
 
     public MagneticMine(Engine e){
         super(e);
@@ -43,7 +43,7 @@ public class MagneticMine extends NPC {
         return 1337;
     }
 
-    public void collide(NPC other) {
+    public void collide(Entity other) {
         if(this.affiliation != other.affiliation) {
             destroy();
         }

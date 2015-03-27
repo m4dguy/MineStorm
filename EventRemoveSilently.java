@@ -7,7 +7,7 @@ public class EventRemoveSilently extends EngineEvent{
      * Simple initialization.
      * @param s sender
      */
-    public EventRemoveSilently(NPC s){super(s);}
+    public EventRemoveSilently(Entity s){super(s);}
 
     /**
      * Remove sender from the Engine's NPC list.

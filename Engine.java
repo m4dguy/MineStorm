@@ -44,7 +44,7 @@ public class Engine {
     }
 
     //affiliations
-    public static enum affiliation {ALLY, NEUTRAL, ENEMY, SHOT};
+    public static enum affiliation {PLAYER, ALLY, NEUTRAL, ENEMY, SHOT};
 
     //constants
     public static final float collisionDistance = 2f;
@@ -75,7 +75,7 @@ public class Engine {
 
     public Random rand;
     protected Player player;
-    protected Vector<NPC> npcs;
+    protected Vector<Entity> npcs;
     protected Vector<EngineEvent> events;
     protected Controller controller;
 
@@ -84,7 +84,7 @@ public class Engine {
 
         player = new Player(this);
 
-        npcs = new Vector<NPC>(MAXENEMIES+MAXSHOTS);
+        npcs = new Vector<Entity>(MAXENEMIES+MAXSHOTS);
         events = new Vector<EngineEvent>(50);
         controller = new Controller(this);
     }
@@ -118,7 +118,7 @@ public class Engine {
      */
     public void tick() {
         //move everything
-        for(NPC n : npcs)
+        for(Entity n : npcs)
         {
             if(n.active() && !n.destroyed())
             {
@@ -166,7 +166,7 @@ public class Engine {
             mine.setSize(LARGESIZE);
             mine.setSpeed(MEDIUMSPEED);
             mine.setPosition(rand.nextInt(fieldWidth), rand.nextInt(fieldHeight));
-            addNPC(mine);
+            addEntity(mine);
         }
     }
 
@@ -212,12 +212,10 @@ public class Engine {
         }
 
         //collision with player
-        Dummy dummy = new Dummy(this);
-        dummy.x = player.x;
-        dummy.y = player.y;
         /*for(int i=0; i<npcs.size(); ++i){
             if(npcs.get(i).collision(player.getModel())) {
-                playerDeath();
+                npcs.get(i).collide(player);
+                player.collide(npcs.get(i));
             }
         }*/
     }
@@ -226,7 +224,7 @@ public class Engine {
      * Adds a new NPC to the game.
      * @param n NPC which is supposed to be added.
      */
-    public void addNPC(NPC n){
+    public void addEntity(Entity n){
         n.activate();
         npcs.add(n);
     }
@@ -270,7 +268,7 @@ public class Engine {
      * @return true, if all NPC are destroyed.
      */
     public boolean levelClear(){
-        for(NPC n: npcs)
+        for(Entity n: npcs)
             if(!n.destroyed())
                 return false;
 
@@ -282,9 +280,9 @@ public class Engine {
      * If so, fire an event to deal with this.
      */
     public void checkBorders(){
-        for(NPC n: npcs) {
+        for(Entity n: npcs) {
             if(n.x<0 || n.x>fieldWidth || n.y<0 || n.y>fieldHeight) {
-                addEvent(new EventWrapNPC(n));
+                addEvent(new EventWrapEntity(n));
             }
         }
 

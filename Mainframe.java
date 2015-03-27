@@ -49,8 +49,9 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
         }
     }
 
-    public static final int NO_FPS_LIMIT = -1;
-    protected static int frames;
+    public static final int NO_FPS_LIMIT = -1;      //render without sleep time
+    public static final int CINEMATIC = 24;         //cinematic frame rate. yes, it sucks. now go home and play a modern console game.
+    protected static int frames;                    //locked to 60fps by default
 
 
     protected DbgWindow dbgWin;
@@ -89,13 +90,15 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
 
         engine = e;
         //frames = NO_FPS_LIMIT;
-        frames = 120;
+        //frames = CINEMATIC;
+        frames = 60;
         controller = new Controller(this);
         renderer = new Renderer(engine);
     }
 
     /**
      * Calls the renderer for updating graphics.
+     * TODO: it appears that paint is sometimes called before the Renderer is ready. We then get a Nullpointer exception.
      * @see Mainframe.Controller
      */
     public void paint(Graphics g){
@@ -122,11 +125,28 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
         dbgWin.setLocation(getX()+getWidth()+10, getY());
     }
 
+    public void handleMouseEvent(MouseEvent e){
+        switch(e.getButton()) {
+            case MouseEvent.BUTTON1:
+                float dx = e.getX() - engine.player.x;
+                float dy = e.getY() - engine.player.y;
+                engine.addEvent(new EventMoveEntity(engine.player, dx, dy));
+                break;
+
+            case MouseEvent.BUTTON2:
+                engine.addEvent(new EventPlayerEscape(engine.player));
+                break;
+
+            case MouseEvent.BUTTON3:
+                engine.addEvent(new EventEntityShoot(engine.player, e.getX(), e.getY()));
+                break;
+
+            default:
+        }
+    }
 
     public void mouseDragged(MouseEvent e) {
-        float dx = e.getX() - engine.player.x;
-        float dy = e.getY() - engine.player.y;
-        engine.addEvent(new EventMovePlayer(new Dummy(engine), dx, dy));
+        handleMouseEvent(e);
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -136,27 +156,7 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
     }
 
     public void mouseClicked(MouseEvent e) {
-
-        switch(e.getButton()) {
-            case MouseEvent.BUTTON1:
-                float dx = e.getX() - engine.player.x;
-                float dy = e.getY() - engine.player.y;
-                engine.addEvent(new EventMovePlayer(new Dummy(engine), dx, dy));
-                break;
-
-            case MouseEvent.BUTTON2:
-                engine.player.escape();
-                break;
-
-            case MouseEvent.BUTTON3:
-                Dummy dummy = new Dummy(engine);
-                dummy.x = e.getX();
-                dummy.y = e.getY();
-                engine.addEvent(new EventPlayerShoot(dummy));
-                break;
-
-            default:
-        }
+        handleMouseEvent(e);
     }
 
     public void mouseEntered(MouseEvent e) {}

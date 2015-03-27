@@ -1,7 +1,7 @@
 /**
  * Created by m4dguy on 24.02.2015.
  */
-public class MineLayer extends NPC {
+public class MineLayer extends Entity {
 
     protected int mines;                      //number of mines lied
     protected float targetX, targetY;         //target point
@@ -39,7 +39,7 @@ public class MineLayer extends NPC {
         return 1000;
     }
 
-    public void collide(NPC other) {
+    public void collide(Entity other) {
         if(this.affiliation != other.affiliation) {
             destroy();
         }
