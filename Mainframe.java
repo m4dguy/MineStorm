@@ -50,7 +50,7 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
     }
 
     public static final int NO_FPS_LIMIT = -1;      //render without sleep time
-    public static final int CINEMATIC = 24;         //cinematic frame rate. yes, it sucks. now go home and play a modern console game.
+    public static final int CINEMATIC = 24;         //cinematic frame rate. yes, it sucks. now go home and play a modern triple-A title.
     protected static int frames;                    //locked to 60fps by default
 
 

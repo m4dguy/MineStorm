@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
  */
 public class Renderer {
 
+    protected static final float AFTERGLOW = .3f;
     protected static MeshModifier playerIcon;
     protected static final int ICONSIZE = 12;
 
@@ -17,7 +18,7 @@ public class Renderer {
     //protected BufferedImage bufferInterface;
     protected BufferedImage graphics;
 
-    protected final Color colorBg = new Color(0f, 0f, 0f);
+    protected final Color colorBg = new Color(0f, 0f, 0f, AFTERGLOW);
     protected final Color colorFg = new Color(1f, 1f, 1f);
 
 
@@ -31,7 +32,7 @@ public class Renderer {
         playerIcon = new MeshModifier(mesh);
         playerIcon.setScaling(ICONSIZE);
 
-        bufferBackground = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_RGB);
+        bufferBackground = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_ARGB);
         //bufferObjects = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_ARGB);
         //bufferInterface = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_ARGB);
         graphics = new BufferedImage(engine.fieldWidth, engine.fieldHeight, BufferedImage.TYPE_INT_RGB);

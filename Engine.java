@@ -42,7 +42,7 @@ public class Engine {
     }
 
     //affiliations
-    public static enum affiliation {PLAYER, ALLY, NEUTRAL, ENEMY};
+    public static enum affiliation {PLAYER, ALLY, NEUTRAL, ENEMY, DESTRUCTIVE};
 
     //constants
     public static final float collisionDistance = 2f;

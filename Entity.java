@@ -112,7 +112,7 @@ public abstract class Entity {
      * @param dy y component of the directional vector.
      */
     public void setAngle(float dx, float dy){
-        model.rotation = (float)Math.atan(dx / dy);
+        model.setRotation((float)Math.atan(dx / dy));
     }
 
     /**
@@ -202,7 +202,7 @@ public abstract class Entity {
     public boolean checkPreciseCollision(Entity other){
         float distance;
 
-        float pos = 0f;     //value of interpolator
+        float pos ;         //value of interpolator
         float x1, y1;       //position of point
         float x2, y2;       //closest position of point on line
 
@@ -211,11 +211,11 @@ public abstract class Entity {
 
         //first check:
         //all nodes of this mesh with all edges of the other mesh
-        for(int i=0; i<model.modified.length; ++i) {
+        for(int i=0; i<model.getNodeCount(); ++i) {
             x1 = model.modified[i][0];
             y1 = model.modified[i][1];
 
-            for(int j=0; j<other.model.mesh.edges.length; ++j) {
+            for(int j=0; j<other.model.mesh.getEdgeCount(); ++j) {
                 px1 = other.model.modified[other.model.mesh.edges[j][0]][0];
                 py1 = other.model.modified[other.model.mesh.edges[j][0]][1];
                 px2 = other.model.modified[other.model.mesh.edges[j][1]][0];
@@ -224,7 +224,7 @@ public abstract class Entity {
                 pos = (px2 - x1)/(px1 - px2) + (py2 - y1)/(py1 - py2);
 
                 if ((pos > 1f) || (pos < 0f))
-                    return false;
+                    continue;
 
                 x2 = px1 * pos + px2 * (1f - pos);
                 y2 = py1 * pos + py2 * (1f - pos);
@@ -239,11 +239,11 @@ public abstract class Entity {
 
         //second check:
         //all nodes of the mesh with all edges of this mesh
-        for(int i=0; i<other.model.modified.length; ++i) {
+        for(int i=0; i<other.model.getNodeCount(); ++i) {
             x1 = other.model.modified[i][0];
             y1 = other.model.modified[i][1];
 
-            for(int j=0; j<model.mesh.edges.length; ++j) {
+            for(int j=0; j<model.mesh.getEdgeCount(); ++j) {
                 px1 = model.modified[model.mesh.edges[j][0]][0];
                 py1 = model.modified[model.mesh.edges[j][0]][1];
                 px2 = model.modified[model.mesh.edges[j][1]][0];
@@ -252,7 +252,7 @@ public abstract class Entity {
                 pos = (px2 - x1)/(px1 - px2) + (py2 - y1)/(py1 - py2);
 
                 if ((pos > 1f) || (pos < 0f))
-                    return false;
+                    continue;
 
                 x2 = px1 * pos + px2 * (1f - pos);
                 y2 = py1 * pos + py2 * (1f - pos);
