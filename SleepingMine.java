@@ -6,7 +6,9 @@ public class SleepingMine extends Entity {
     public SleepingMine(Engine e){
         super(e);
         affiliation = Engine.affiliation.NEUTRAL;
-        model = MeshLoader.loadVectorObject("gfx/sleepingmine.vo");
+        Mesh mesh = MeshLoader.loadVectorObject("gfx/sleepingmine.vo");
+        model = new MeshModifier(mesh);
+
     }
 
     public void act()

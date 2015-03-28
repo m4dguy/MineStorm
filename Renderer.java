@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
  */
 public class Renderer {
 
-    protected static Mesh playerIcon;
+    protected static MeshModifier playerIcon;
     protected static final int ICONSIZE = 12;
 
     protected Engine engine;
@@ -27,7 +27,9 @@ public class Renderer {
      */
     public Renderer(Engine e){
         engine = e;
-        playerIcon = MeshLoader.loadVectorObject("gfx/player.vo");
+        Mesh mesh = MeshLoader.loadVectorObject("gfx/player.vo");
+        playerIcon = new MeshModifier(mesh);
+        playerIcon.setScaling(ICONSIZE);
 
         bufferBackground = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_RGB);
         //bufferObjects = new BufferedImage(engine.fieldWidth, engine.fieldHeight,  BufferedImage.TYPE_INT_ARGB);
@@ -79,53 +81,48 @@ public class Renderer {
      */
     public void renderPlayer() {
         Player player = engine.player;
-        Mesh model = player.model;
-        model.transformationReset();
-        model.scale(player.size);
-        model.rotate(player.angle);
-        model.displace(player.x, player.y);
-        renderMesh(model);
+        renderEntity(player);
     }
 
     /**
-     * Render each single NPC.
+     * Render all NPCs.
      */
     public void renderNPCs() {
-        Entity n;
-        Mesh m;
+        Entity e;
+        MeshModifier m;
 
         for(int a=0; a<engine.npcs.size(); ++a){
-            n = engine.npcs.get(a);
+            e = engine.npcs.get(a);
 
-            if(!n.active()){
+            if(!e.active()){
                 continue;
             }
 
-            m = n.model;
-
-            m.transformationReset();
-            m.scale(n.size);
-
-            if(n.angle != 0)
-                m.rotate(n.angle);
-
-            m.displace(n.x, n.y);
-            renderMesh(m);
+            renderEntity(e);
         }
     }
 
     /**
-     * Renders a single Mesh object.
-     * @param m the Mesh which is supposed to be rendered.
+     * Renders a single Entity.
+     * @param e the Entity which is supposed to be rendered.
      */
-    public void renderMesh(Mesh m) {
+    public void renderEntity(Entity e) {
+        renderMesh(e.getMesh());
+    }
+
+    /**
+     * Renders a single Entity.
+     * @param e the Entity which is supposed to be rendered.
+     */
+    public void renderMesh(MeshModifier m) {
         Graphics g = graphics.getGraphics();
+        m.applyTransformations();
 
         int i, j;
-        for(int e=0; e<m.edgeCount; ++e) {
-            i = m.edges[e][0];
-            j = m.edges[e][1];
-            g.drawLine((int) m.nodesDisplaced[i][0], (int) m.nodesDisplaced[i][1], (int) m.nodesDisplaced[j][0], (int) m.nodesDisplaced[j][1]);
+        for(int e=0; e<m.getEdgeCount(); ++e) {
+            i = m.getEdges()[e][0];
+            j = m.getEdges()[e][1];
+            g.drawLine((int) m.modified[i][0], (int) m.modified[i][1], (int) m.modified[j][0], (int) m.modified[j][1]);
         }
     }
 
@@ -139,11 +136,15 @@ public class Renderer {
         //draw score
         g.drawString(String.valueOf(engine.score), 20, 30);
 
+        float dx, dy;
+
         //draw lives
         for(int i=0; i<engine.lives; ++i) {
-            playerIcon.transformationReset();
-            playerIcon.scale(ICONSIZE);
-            playerIcon.displace(engine.fieldWidth - (i*ICONSIZE*2) - 30, engine.fieldHeight - 45);
+            dx = engine.fieldWidth - (i*ICONSIZE*2) - 30;
+            dy = engine.fieldHeight - 45;
+
+            playerIcon.setDisplacement(dx, dy);
+            playerIcon.applyTransformations();
             renderMesh(playerIcon);
         }
     }

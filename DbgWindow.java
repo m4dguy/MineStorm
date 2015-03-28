@@ -52,18 +52,18 @@ public class DbgWindow extends Frame {
         label3.setText("Score");
         cp.add(label3);
         label4.setBounds(8, 56, 110, 20);
-        label4.setText("Lifes");
+        label4.setText("Lives");
         cp.add(label4);
         label5.setBounds(8, 128, 110, 20);
         label5.setText("Player");
         cp.add(label5);
         label6.setBounds(8, 152, 110, 20);
-        label6.setText("Player speed");
+        label6.setText("Player direction");
         cp.add(label6);
         tf_speed.setBounds(120, 152, 150, 20);
         cp.add(tf_speed);
         label7.setBounds(8, 176, 110, 20);
-        label7.setText("Player acceleration");
+        label7.setText("Player speed");
         cp.add(label7);
 
         tf_npcs.setBounds(120, 8, 150, 20);

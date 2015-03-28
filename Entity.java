@@ -9,8 +9,6 @@ public abstract class Entity {
     //shape modifiers
     protected float x = 0f;
     protected float y = 0f;
-    protected float size = 1f;
-    protected float angle = 0f;
 
     protected float dirX = 0f;
     protected float dirY = 0f;
@@ -18,7 +16,7 @@ public abstract class Entity {
 
     protected int health;               //not used in MineStorm
     protected Engine.affiliation affiliation = Engine.affiliation.ENEMY;
-    protected Mesh model;
+    protected MeshModifier model;
     protected boolean destroyed = false;
     protected boolean active = false;
 
@@ -70,6 +68,7 @@ public abstract class Entity {
     public void move(){
         x += dirX * speed;
         y += dirY * speed;
+        model.setDisplacement(x, y);
     }
 
     /**
@@ -83,7 +82,7 @@ public abstract class Entity {
      * @param s scaling factor.
      */
     public void setSize(float s){
-        size = s;
+        model.scaling = s;
     }
 
     /**
@@ -113,7 +112,7 @@ public abstract class Entity {
      * @param dy y component of the directional vector.
      */
     public void setAngle(float dx, float dy){
-        angle = (float)Math.atan(dx / dy);
+        model.rotation = (float)Math.atan(dx / dy);
     }
 
     /**
@@ -122,7 +121,7 @@ public abstract class Entity {
      * @param a the new angle.
      */
     public void setAngle(float a) {
-        angle = a;
+        model.setRotation(a);
     }
 
     /**
@@ -133,6 +132,7 @@ public abstract class Entity {
     public void setPosition(float px, float py) {
         x = px;
         y = py;
+        model.setDisplacement(x, y);
     }
 
     /**
@@ -151,13 +151,7 @@ public abstract class Entity {
         return y;
     }
 
-    /**
-     * Returns the size of the Entity.
-     * @return the Entity's size.
-     */
-    public float getSize(){
-        return size;
-    }
+    public MeshModifier getMesh(){return model;}
 
     /**
      * Tell the Engine if this Entity has been destroyed.
@@ -195,7 +189,7 @@ public abstract class Entity {
             return false;
 
         float dist = distance(other);
-        return dist < (this.model.bound*this.size + other.model.bound*other.size);
+        return dist < (this.model.getBound() + other.model.getBound());
     }
 
     /**
@@ -217,15 +211,15 @@ public abstract class Entity {
 
         //first check:
         //all nodes of this mesh with all edges of the other mesh
-        for(int i=0; i<model.nodes.length; ++i) {
-            x1 = model.nodesDisplaced[i][0];
-            y1 = model.nodesDisplaced[i][1];
+        for(int i=0; i<model.modified.length; ++i) {
+            x1 = model.modified[i][0];
+            y1 = model.modified[i][1];
 
-            for(int j=0; j<other.model.edges.length; ++j) {
-                px1 = other.model.nodesDisplaced[other.model.edges[j][0]][0];
-                py1 = other.model.nodesDisplaced[other.model.edges[j][0]][1];
-                px2 = other.model.nodesDisplaced[other.model.edges[j][1]][0];
-                py2 = other.model.nodesDisplaced[other.model.edges[j][1]][1];
+            for(int j=0; j<other.model.mesh.edges.length; ++j) {
+                px1 = other.model.modified[other.model.mesh.edges[j][0]][0];
+                py1 = other.model.modified[other.model.mesh.edges[j][0]][1];
+                px2 = other.model.modified[other.model.mesh.edges[j][1]][0];
+                py2 = other.model.modified[other.model.mesh.edges[j][1]][1];
 
                 pos = (px2 - x1)/(px1 - px2) + (py2 - y1)/(py1 - py2);
 
@@ -245,15 +239,15 @@ public abstract class Entity {
 
         //second check:
         //all nodes of the mesh with all edges of this mesh
-        for(int i=0; i<other.model.nodes.length; ++i) {
-            x1 = other.model.nodesDisplaced[i][0];
-            y1 = other.model.nodesDisplaced[i][1];
+        for(int i=0; i<other.model.modified.length; ++i) {
+            x1 = other.model.modified[i][0];
+            y1 = other.model.modified[i][1];
 
-            for(int j=0; j<model.edges.length; ++j) {
-                px1 = model.nodesDisplaced[model.edges[j][0]][0];
-                py1 = model.nodesDisplaced[model.edges[j][0]][1];
-                px2 = model.nodesDisplaced[model.edges[j][1]][0];
-                py2 = model.nodesDisplaced[model.edges[j][1]][1];
+            for(int j=0; j<model.mesh.edges.length; ++j) {
+                px1 = model.modified[model.mesh.edges[j][0]][0];
+                py1 = model.modified[model.mesh.edges[j][0]][1];
+                px2 = model.modified[model.mesh.edges[j][1]][0];
+                py2 = model.modified[model.mesh.edges[j][1]][1];
 
                 pos = (px2 - x1)/(px1 - px2) + (py2 - y1)/(py1 - py2);
 

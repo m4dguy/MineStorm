@@ -62,6 +62,7 @@ public class Engine {
     public static final int MAXSHOTS = 5;                  //max number of shots
 
     //variables
+    public static boolean paused = false;
     public static int ticks = 60;                           //maximum ticks per second
     public static int fieldWidth = 480;                     //game board dimension
     public static int fieldHeight = 620;                    //game board dimension
@@ -115,6 +116,9 @@ public class Engine {
      * @see Engine.Controller
      */
     public void tick() {
+        if(paused)
+            return;
+
         //move everything
         for(Entity n : npcs)
         {

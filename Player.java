@@ -5,9 +5,11 @@
 public class Player extends Entity{
 
     public Player(Engine e) {
-        model = MeshLoader.loadVectorObject("gfx/player.vo");
+        Mesh mesh = MeshLoader.loadVectorObject("gfx/player.vo");
+        model = new MeshModifier(mesh);
+
         engine = e;
-        size = Engine.LARGESIZE;
+        model.scaling = Engine.LARGESIZE;
         affiliation = Engine.affiliation.PLAYER;
         reset();
     }
@@ -16,12 +18,12 @@ public class Player extends Entity{
         destroyed = false;
         active = true;
         setPosition((Engine.fieldWidth/2f), (Engine.fieldHeight/2f));
-        angle = 0;
+        model.setRotation(0);
         speed = 0;
     }
 
     public void act(){
-        speed *= .99f;
+        speed *= .975f;
     }
 
     public void destroy() {

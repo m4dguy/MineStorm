@@ -150,7 +150,7 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
         float dx = e.getX() - engine.player.x;
         float dy = e.getY() - engine.player.y;
         engine.player.setAngle(dx, dy);
-        engine.addEvent(new EventMoveEntity(engine.player, dx, dy, Engine.FASTSPEED));
+        engine.addEvent(new EventMoveEntity(engine.player, dx, dy, Engine.MAXSPEED));
     }
 
     public void mouseMoved(MouseEvent e) {

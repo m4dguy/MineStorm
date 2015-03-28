@@ -6,7 +6,9 @@ public class FloatingMine extends Entity {
 
     public FloatingMine(Engine e){
         super(e);
-        model = MeshLoader.loadVectorObject("gfx/floatingmine.vo");
+
+        Mesh mesh =  MeshLoader.loadVectorObject("gfx/floatingmine.vo");
+        model = new MeshModifier(mesh);
 
         float dx = engine.rand.nextFloat();
         float dy = engine.rand.nextFloat();
@@ -20,12 +22,12 @@ public class FloatingMine extends Entity {
     }
 
     public void destroy() {
-        if (size == Engine.LARGESIZE) {
+        if (model.scaling == Engine.LARGESIZE) {
             engine.addEvent(new EventSpawnFloatingMine(this, Engine.MEDIUMSIZE, Engine.MEDIUMSPEED));
             engine.addEvent(new EventSpawnFloatingMine(this, Engine.MEDIUMSIZE, Engine.MEDIUMSPEED));
         }
 
-        if (size == Engine.MEDIUMSIZE) {
+        if (model.scaling == Engine.MEDIUMSIZE) {
             engine.addEvent(new EventSpawnFloatingMine(this, Engine.SMALLSIZE, Engine.FASTSPEED));
             engine.addEvent(new EventSpawnFloatingMine(this, Engine.SMALLSIZE, Engine.FASTSPEED));
         }
@@ -40,13 +42,13 @@ public class FloatingMine extends Entity {
     }
 
     public int getScore(){
-        if (size == Engine.LARGESIZE)
+        if (model.scaling == Engine.LARGESIZE)
             return 100;
 
-        if (size == Engine.MEDIUMSIZE)
+        if (model.scaling == Engine.MEDIUMSIZE)
             return 135;
 
-        if (size == Engine.SMALLSIZE)
+        if (model.scaling == Engine.SMALLSIZE)
             return 200;
 
         //debug

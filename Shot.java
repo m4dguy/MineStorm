@@ -4,7 +4,7 @@
 
 public class Shot extends Entity{
 
-    public static final int shotLife = (int)(0.9 * Engine.fieldWidth);
+    public static final int shotLife = (int)(0.8 * Engine.fieldWidth);
 
     public Shot(Engine e) {
         this(e, 0f, 0f, 0f, 0f);
@@ -12,8 +12,10 @@ public class Shot extends Entity{
 
     public Shot(Engine e, float px, float py, float dx, float dy) {
         super(e);
-        model = MeshLoader.loadVectorObject("gfx/shot.vo");
-        size = Engine.SMALLSIZE;
+        Mesh mesh = MeshLoader.loadVectorObject("gfx/shot.vo");
+        model = new MeshModifier(mesh);
+
+        model.setScaling(Engine.SMALLSIZE);
         life = shotLife;
         x = px;
         y = py;
@@ -48,8 +50,6 @@ public class Shot extends Entity{
     public void destroy() {
         destroyed = true;
     }
-
-    public Mesh getModel(){return model;}
 
     public int getScore(){return 110;}
 }

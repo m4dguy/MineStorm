@@ -12,7 +12,9 @@ public class MineLayer extends Entity {
 
     public MineLayer(Engine e){
         super(e);
-        model = MeshLoader.loadVectorObject("gfx/floatingmine.vo");
+        Mesh mesh = MeshLoader.loadVectorObject("gfx/floatingmine.vo");
+        model = new MeshModifier(mesh);
+
         mines = 0;
         setNewTarget();
     }

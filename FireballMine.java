@@ -6,7 +6,9 @@ public class FireballMine extends Entity {
 
     public FireballMine(Engine e){
         super(e);
-        model = MeshLoader.loadVectorObject("gfx/fireballmine.vo");
+        Mesh mesh = MeshLoader.loadVectorObject("gfx/fireballmine.vo");
+        model = new MeshModifier(mesh);
+
         float dx = engine.rand.nextFloat();
         float dy = engine.rand.nextFloat();
         dx *= (engine.rand.nextFloat() < 0.5f)? 1f : -1f;
@@ -19,12 +21,12 @@ public class FireballMine extends Entity {
     }
 
     public void destroy() {
-        if (size == Engine.LARGESIZE) {
+        if (model.scaling == Engine.LARGESIZE) {
             engine.addEvent(new EventSpawnFireballMine(this, Engine.MEDIUMSIZE, Engine.MEDIUMSPEED));
             engine.addEvent(new EventSpawnFireballMine(this, Engine.MEDIUMSIZE, Engine.MEDIUMSPEED));
         }
 
-        if (size == Engine.MEDIUMSIZE) {
+        if (model.scaling == Engine.MEDIUMSIZE) {
             engine.addEvent(new EventSpawnFireballMine(this, Engine.SMALLSIZE, Engine.FASTSPEED));
             engine.addEvent(new EventSpawnFireballMine(this, Engine.SMALLSIZE, Engine.FASTSPEED));
         }
@@ -34,13 +36,13 @@ public class FireballMine extends Entity {
     }
 
     public int getScore() {
-        if (size == Engine.LARGESIZE)
+        if (model.scaling == Engine.LARGESIZE)
             return 325;
 
-        if (size == Engine.MEDIUMSIZE)
+        if (model.scaling == Engine.MEDIUMSIZE)
             return 360;
 
-        if (size == Engine.SMALLSIZE)
+        if (model.scaling == Engine.SMALLSIZE)
             return 425;
 
         //debug
