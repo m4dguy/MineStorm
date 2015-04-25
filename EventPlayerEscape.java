@@ -6,13 +6,16 @@ public class EventPlayerEscape extends EngineEvent {
     public EventPlayerEscape(Entity s){super(s);}
 
     /**
-     * Change player direction.
+     * Change player location.
      * @return always true
      */
     public boolean execute(){
-        engine.player.reset();
+        engine.addEvent(new EventSpawnParticles(sender));
         sender.x = engine.rand.nextFloat() * Engine.fieldWidth;
         sender.y = engine.rand.nextFloat() * Engine.fieldHeight;
+        sender.model.setRotation(0);
+        sender.speed = 0;
+
         return true;
     }
 }

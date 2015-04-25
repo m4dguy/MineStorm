@@ -15,8 +15,23 @@ public class EventSpawnFloatingMine extends EngineEvent{
         FloatingMine mine = new FloatingMine(engine);
         mine.setSize(size);
         mine.setSpeed(speed);
-        mine.setPosition(sender.x, sender.y);
-        engine.addEntity(mine);
+
+        //find and replace suitable SleepingMine
+        Entity e;
+        for(int i=0; i<engine.npcs.size(); ++i)
+        {
+            e = engine.getEntity(i);
+            if(e instanceof SleepingMine)
+            {
+                mine.setPosition(e.getPositionX(), e.getPositionY());
+                engine.addEntity(mine);
+                engine.removeEntity(i);
+                engine.addEvent(new EventPinEntity(mine, 60));
+
+                break;
+            }
+        }
+
         return true;
     }
 }

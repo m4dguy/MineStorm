@@ -1,5 +1,5 @@
 /**
- * Spawn an explosion at the given position.
+ * Spawn an explosion at the position of given Entity.
  */
 public class EventSpawnExplosion extends EngineEvent {
 
@@ -15,9 +15,10 @@ public class EventSpawnExplosion extends EngineEvent {
      */
     public boolean execute()
     {
-        //TODO: explosion!
-        //engine.addNPC(new Dummy(engine));
-
+        Explosion ex = new Explosion(engine);
+        ex.x = sender.x;
+        ex.y = sender.y;
+        engine.addEntity(ex);
 
         return true;
     }

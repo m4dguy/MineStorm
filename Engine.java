@@ -120,17 +120,17 @@ public class Engine {
             return;
 
         //move everything
-        for(Entity n : npcs)
-        {
-            if(n.active() && !n.destroyed())
-            {
+        for(Entity n : npcs) {
+            if(n.active() && !n.destroyed()) {
                 n.act();
                 n.move();
             }
         }
 
-        player.act();
-        player.move();
+        if(player.active()) {
+            player.act();
+            player.move();
+        }
 
         //check collisions and events
         checkBorders();
@@ -149,7 +149,9 @@ public class Engine {
      */
     //TODO: placeholder
     public void gameOver(){
-        System.exit(0);
+        init();
+        loadLevel(0);
+        //System.exit(0);
     }
 
 
@@ -165,12 +167,21 @@ public class Engine {
         npcs.clear();
 
         for(int i=0; i<3; ++i){
-            FireballMine mine = new FireballMine(this);
+            FloatingMine mine = new FloatingMine(this);
             mine.setSize(LARGESIZE);
             mine.setSpeed(MEDIUMSPEED);
             mine.setPosition(rand.nextInt(fieldWidth), rand.nextInt(fieldHeight));
             addEntity(mine);
         }
+
+        for(int i=0; i<18; ++i){
+            SleepingMine mine = new SleepingMine(this);
+            mine.setSize(LARGESIZE);
+            mine.setSpeed(MEDIUMSPEED);
+            mine.setPosition(rand.nextInt(fieldWidth), rand.nextInt(fieldHeight));
+            addEntity(mine);
+        }
+
     }
 
     /**
@@ -235,6 +246,21 @@ public class Engine {
         n.activate();
         npcs.add(n);
     }
+
+    /**
+     * Get Entity of index i.
+     * @param i index of the Entity
+     * @return Entity of given index
+     */
+    public Entity getEntity(int i){
+        return npcs.get(i);
+    }
+
+    /**
+     * Remove Entity of index i from Engine.
+     * @param i index of Entity
+     */
+    public void removeEntity(int i){npcs.remove(i);}
 
     /**
      * Adds a new EngineEvent to the game.

@@ -4,8 +4,6 @@
 
 public abstract class Entity {
 
-    protected int life;
-
     //shape modifiers
     protected float x = 0f;
     protected float y = 0f;
@@ -182,7 +180,11 @@ public abstract class Entity {
      * @return true, if the bounds collide
      */
     public boolean checkBoundCollision(Entity other) {
+
         if(this.affiliation == other.affiliation)
+            return false;
+
+        if((this.affiliation == Engine.affiliation.NEUTRAL) || (other.affiliation == Engine.affiliation.NEUTRAL) )
             return false;
 
         if(this.destroyed() || !this.active || other.destroyed() || !other.active)

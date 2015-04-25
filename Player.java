@@ -29,7 +29,12 @@ public class Player extends Entity{
     public void destroy() {
         destroyed =true;
         active = false;
-        engine.addEvent(new EventPlayerDeath(this));
+
+        EventPlayerDeath evDeath = new EventPlayerDeath(this);
+        EventTickDelay evDelay = new EventTickDelay(this, 50, evDeath);
+        engine.addEvent(evDelay);
+        engine.addEvent(new EventSpawnExplosion(this));
+        engine.addEvent(new EngineEventSpawnScrap(this));
     }
 
     public void collide(Entity other){

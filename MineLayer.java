@@ -49,6 +49,7 @@ public class MineLayer extends Entity {
 
     public void destroy()
     {
+        engine.addEvent(new EventSpawnExplosion(this));
         destroyed = true;
     }
 

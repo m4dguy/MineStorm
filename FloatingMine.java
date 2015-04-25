@@ -32,6 +32,7 @@ public class FloatingMine extends Entity {
             engine.addEvent(new EventSpawnFloatingMine(this, Engine.SMALLSIZE, Engine.FASTSPEED));
         }
 
+        engine.addEvent(new EventSpawnExplosion(this));
         destroyed = true;
     }
 

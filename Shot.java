@@ -16,7 +16,7 @@ public class Shot extends Entity{
         model = new MeshModifier(mesh);
 
         model.setScaling(Engine.SMALLSIZE);
-        life = shotLife;
+        health = shotLife;
         x = px;
         y = py;
 
@@ -28,11 +28,11 @@ public class Shot extends Entity{
     public void act()
     {
         if(active()) {
-            life -= speed;
-            active = life > 0;
+            health -= speed;
+            active = health > 0;
         }
 
-        if(life <= 0){
+        if(health <= 0){
             engine.addEvent(new EventRemoveSilently(this));
         }
     }

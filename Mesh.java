@@ -2,9 +2,10 @@ import java.util.Arrays;
 
 /**
  * Object for storing vector graphic information.
- * Contains methods for construction, manipulation and collision checks.
+ * Contains methods for construction, alignment and bounding circle calculation.
  * Carries node and edge information about the object.
- * The nodes are stored in an unmodified (nodes) and a transformed representation (nodesDisplaced).
+ * The nodes are stored in an unmodified representation.
+ * For applying transformations, add this node tho a MeshModifier.
  *
  * Created by m4dguy on 24.02.2015.
  */
@@ -96,6 +97,8 @@ public class Mesh {
     protected void align(){
         calcCenterX();
         calcCenterY();
+        //centerX = .5f;
+        //centerY = .5f;
         for(int i=0; i<getNodeCount(); ++i){
             nodes[i][0] -= centerX;
             nodes[i][1] -= centerY;

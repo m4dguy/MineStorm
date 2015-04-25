@@ -70,13 +70,8 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
                 System.exit(0);}
         });
 
-        int frameWidth = 480;
-        int frameHeight = 620;
-        setSize(frameWidth, frameHeight);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (d.width - getSize().width) / 2;
-        int y = (d.height - getSize().height) / 2;
-        setLocation(x, y);
+
         Panel cp = new Panel(new BorderLayout());
         add(cp);
         setResizable(false);
@@ -89,16 +84,21 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
         setVisible(true);
 
         engine = e;
+        frames = 60;
         //frames = NO_FPS_LIMIT;
         //frames = CINEMATIC;
-        frames = 60;
         controller = new Controller(this);
         renderer = new Renderer(engine);
+
+        setSize(engine.fieldWidth, engine.fieldHeight);
+        int x = (d.width - getSize().width) / 2;
+        int y = (d.height - getSize().height) / 2;
+        setLocation(x, y);
     }
 
     /**
      * Calls the renderer for updating graphics.
-     * TODO: it appears that paint is sometimes called before the Renderer is ready. We then get a Nullpointer exception.
+     * TODO: it appears that paint is sometimes called before the Renderer is ready. This throws a Nullpointer exception.
      * @see Mainframe.Controller
      */
     public void paint(Graphics g){
@@ -159,9 +159,7 @@ public class Mainframe extends Frame implements MouseMotionListener, MouseListen
         engine.player.setAngle(dx, dy);
     }
 
-    public void mouseClicked(MouseEvent e) {
-        handleMouseEvent(e);
-    }
+    public void mouseClicked(MouseEvent e) {handleMouseEvent(e);}
 
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}

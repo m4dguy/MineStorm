@@ -26,6 +26,7 @@ public class MagneticMine extends Entity {
             engine.addEvent(new EventSpawnMagneticMine(this, Engine.SMALLSIZE, Engine.FASTSPEED));
         }
 
+        engine.addEvent(new EventSpawnExplosion(this));
         destroyed = true;
     }
 

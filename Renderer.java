@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
  */
 public class Renderer {
 
-    protected static final float AFTERGLOW = .3f;
+    protected static final float AFTERGLOW = .2f;
     protected static MeshModifier playerIcon;
     protected static final int ICONSIZE = 12;
 
@@ -82,7 +82,8 @@ public class Renderer {
      */
     public void renderPlayer() {
         Player player = engine.player;
-        renderEntity(player);
+        if(player.active())
+            renderEntity(player);
     }
 
     /**

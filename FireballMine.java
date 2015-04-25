@@ -32,6 +32,7 @@ public class FireballMine extends Entity {
         }
 
         engine.addEvent(new EventSpawnFireball(this));
+        engine.addEvent(new EventSpawnExplosion(this));
         destroyed = true;
     }
 
